@@ -1,0 +1,78 @@
+#include <math.h>
+#include "binary_trees.h"
+
+/**
+ * max - returns the maximum of two
+ * @left: first number
+ * @right: second number
+ * Return: larger number
+ **/
+size_t max(size_t left, size_t right)
+{
+	if (left >= right)
+		return (left);
+	return (right);
+}
+
+/**
+ * count_nodes - counts nodes of the tree
+ * @tree: pointer to root node of tree
+ * Return: total number of nodes or 0
+ **/
+size_t count_nodes(const binary_tree_t *tree)
+{
+	if (!tree)
+		return (0);
+	return (1 + count_nodes(tree->left) + count_nodes(tree->right));
+}
+
+/**
+ * count_height - calculates height, considering root
+ * at height 1.
+ * @tree: pointer to the root of the tree
+ * Return: height of tree or 0
+ **/
+size_t count_height(const binary_tree_t *tree)
+{
+	if (!tree)
+		return (0);
+	return (1 + max(count_height(tree->left), count_height(tree->right)));
+}
+
+/**
+ * cal_power - calculates the power of 2
+ * @exponent: power of 2
+ * Return: 2^n
+ **/
+size_t cal_power(size_t exponent)
+{
+	size_t result = 1;
+
+	if (exponent == 0)
+		return (result);
+	while (exponent > 0)
+	{
+		result *= 2;
+		exponent -= 1;
+	}
+	return (result);
+}
+
+/**
+ * binary_tree_is_perfect - checks if a binary tree is perfect
+ * @tree:  pointer to the root node of the tree
+ * Return: 1 if tree is perfect, 0 if not or tree is NULL
+ **/
+int binary_tree_is_perfect(const binary_tree_t *tree)
+{
+	size_t total_nodes, height;
+
+	if (!tree)
+		return (0);
+	height = count_height(tree);
+	total_nodes = count_nodes(tree);
+
+	if (total_nodes == cal_power(height) - 1)
+		return (1);
+	return (0);
+}
